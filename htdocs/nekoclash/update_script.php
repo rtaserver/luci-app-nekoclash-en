@@ -1,7 +1,7 @@
 <?php
 $repo_owner = "Thaolga";
-$repo_name = "neko";
-$package_name = "luci-app-neko"; 
+$repo_name = "luci-app-nekoclash"; 
+$package_name = "luci-app-nekoclash"; 
 
 $api_url = "https://api.github.com/repos/$repo_owner/$repo_name/releases/latest";
 $local_api_response = "/tmp/api_response.json";
@@ -23,7 +23,7 @@ if (empty($new_version)) {
     die("未找到最新版本或版本信息为空。");
 }
 
-$download_url = $data['assets'][0]['browser_download_url'] ?? "https://github.com/$repo_owner/$repo_name/releases/download/$new_version/{$package_name}_{$new_version}_all.ipk";
+$download_url = "https://github.com/Thaolga/luci-app-nekoclash/releases/download/$new_version/{$package_name}_{$new_version}_all.ipk";
 
 echo "<pre>最新版本: $new_version</pre>";
 
