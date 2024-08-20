@@ -63,8 +63,8 @@ get_version_info() {
 
 install_ipk() {
     repo_owner="Thaolga"
-    repo_name="neko"
-    package_name="luci-app-neko"
+    repo_name="luci-app-nekoclash"
+    package_name="luci-app-nekoclash"
     releases_url="https://api.github.com/repos/$repo_owner/$repo_name/releases/latest"
 
     echo -e "${CYAN}更新 opkg 软件包列表...${NC}"
@@ -133,6 +133,7 @@ install_ipk() {
     rm -f "$local_file"
     log_message "已删除临时文件: $local_file"
 }
+
 
 install_core() {
     log_message "获取最新核心版本号..."
