@@ -18,7 +18,7 @@ function writeVersionToFile($version) {
 
 $latest_version = 'V1.9.4'; 
 $current_version = ''; 
-$install_path = '/etc/neko/core/sing-box'; 
+$install_path = '/usr/bin/sing-box'; 
 $temp_file = '/tmp/sing-box.gz'; 
 
 if (file_exists($install_path)) {
@@ -36,7 +36,7 @@ switch ($current_arch) {
         $download_url = 'https://github.com/Thaolga/neko/releases/download/core_neko/sing-box-1.9.4-linux-arm64';
         break;
     case 'x86_64':
-        $download_url = 'https://github.com/Thaolga/neko/releases/download/core_neko/sing-box-1.9.4-linux-amd64';
+        $download_url = 'https://github.com/Thaolga/neko/releases/download/core_neko/sing-box';
         break;
     default:
         logMessage("未找到适合架构的下载链接: $current_arch");
