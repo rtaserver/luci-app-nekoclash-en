@@ -5,7 +5,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_MAINTAINER:=nosignal <https://github.com/nosignals/neko>
-PKG_NAME:=luci-app-neko
+PKG_NAME:=luci-app-nekoclash
 PKG_VERSION:=1.1.32-beta
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
@@ -15,7 +15,7 @@ define Package/$(PKG_NAME)
 	SUBMENU:=3. Applications
 	TITLE:=LuCI support for mihomo
 	PKGARCH:=all
-	DEPENDS:=+kmod-tun +bash +curl +jq +php8 +php8-cgi +gzip
+	DEPENDS:=+kmod-tun +bash +curl +jq +php8 +php8-cgi 
 endef
 
 define Package/$(PKG_NAME)/description
