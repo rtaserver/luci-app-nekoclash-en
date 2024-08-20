@@ -441,7 +441,7 @@ $singBoxVersion = getSingboxVersion();
                         </td>
                         <td>
                             <div class="link-box">
-                                <a href="https://github.com/Thaolga/neko" target="_blank">Thaolga</a>
+                                <a href="https://github.com/Thaolga/luci-app-nekoclash" target="_blank">Thaolga</a>
                             </div>
                         </td>
                     </tr>
