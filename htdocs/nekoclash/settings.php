@@ -298,7 +298,7 @@ $singBoxVersion = getSingboxVersion();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NekoClash</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/www/nekoclash/assets/css/bootstrap.min.css">
     <style>
         body {
             margin: 0;
@@ -470,6 +470,6 @@ $singBoxVersion = getSingboxVersion();
         </footer>
     </div>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="/www/nekoclash/assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
