@@ -348,6 +348,15 @@ include './cfg.php';
     .form-spacing {
         margin: 20px 0;
     }
+    .input-group input,
+    .input-group textarea,
+    .input-group select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    background-color: #fd7e14; 
+    border: 1px solid #ccc; 
+    }
 </style>
 
     </head>
