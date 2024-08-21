@@ -463,6 +463,42 @@ nft -f /etc/nftables.conf
 $singBoxPath run -c $configFilePath
 EOF;
 
+$maxFileSize = 2 * 1024 * 1024;  
+$maxBackupFiles = 2;  
+
+function rotateLogFile($filePath) {
+    $backupPath = $filePath . '-' . date('Y-m-d-H-i-s') . '.bak';
+    rename($filePath, $backupPath);  
+    touch($filePath);  
+    cleanUpOldBackups(dirname($filePath), basename($filePath));
+}
+
+function cleanUpOldBackups($dir, $fileName) {
+    global $maxBackupFiles;
+    $pattern = preg_quote($fileName, '/');
+    $files = glob("$dir/$pattern-*.bak");
+
+    if (count($files) > $maxBackupFiles) {
+        usort($files, function ($a, $b) {
+            return filemtime($b) - filemtime($a);
+        });
+
+        $filesToDelete = array_slice($files, $maxBackupFiles);
+        foreach ($filesToDelete as $file) {
+            unlink($file);
+        }
+    }
+}
+
+function checkLogFileSize($filePath, $maxFileSize) {
+    if (file_exists($filePath)) {
+        $fileSize = filesize($filePath);
+        if ($fileSize > $maxFileSize) {
+            rotateLogFile($filePath);
+        }
+    }
+}
+
 function isSingboxRunning() {
     global $singBoxPath;
     $command = "ps w | grep '$singBoxPath' | grep -v grep";
@@ -552,6 +588,7 @@ function readRecentLogLines($filePath, $lines = 1000) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['singbox'])) {
         if ($_POST['singbox'] === 'start') {
+            checkLogFileSize($singBoxLogFile, $maxFileSize);
             applyFirewallRules();
             createStartScript();
             exec("/etc/neko/core/start.sh > $singBoxLogFile 2>&1 &", $output, $returnVar);
@@ -567,6 +604,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($_POST['singbox'] === 'restart') {
             $success = stopSingbox();
             if ($success) {
+                checkLogFileSize($singBoxLogFile, $maxFileSize); 
                 applyFirewallRules();
                 createStartScript();
                 exec("/etc/neko/core/start.sh > $singBoxLogFile 2>&1 &", $output, $returnVar);
@@ -598,9 +636,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 function readLogFile($filePath) {
     if (file_exists($filePath)) {
-        return nl2br(htmlspecialchars(readRecentLogLines($filePath)));
+        return nl2br(htmlspecialchars(readRecentLogLines($filePath, 1000)));
     } else {
-        return '日志文件不存在';
+        return '日志文件不存在。';
     }
 }
 
@@ -609,6 +647,7 @@ $kernelLogContent = readLogFile($kernelLogFile);
 $singboxLogContent = readLogFile($singBoxLogFile); 
 $singboxStartLogContent = readLogFile($singboxStartLogFile); 
 ?>
+
 <div class="container container-bg border border-3 col-12 mb-4">
     <h2 class="text-center p-2">NekoClash 控制面板</h2>
     <table class="table table-borderless mb-2">
