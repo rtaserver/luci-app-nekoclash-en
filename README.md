@@ -13,7 +13,7 @@
   Mihomo based Proxy
 </p>
 
-# 此项目自1.1.33开始添加对Sing-box的支持，只支持firewall4 + nftables 原Mihomo功能不受影响
+# 此项目自1.1.33开始添加对 Sing-box 的支持《firewall4 + nftables》 原 Mihomo 功能不受影响
 ---
 
 
