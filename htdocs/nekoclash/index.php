@@ -815,7 +815,7 @@ $singboxStartLogContent = readLogFile($singboxStartLogFile);
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/www/nekoclash/assets/js/bootstrap.bundle.min.js"></script>
     <footer class="text-center">
         <p><?php echo isset($message) ? $message : ''; ?></p>
         <p><?php echo $footer; ?></p>
