@@ -46,5 +46,5 @@ git clone https://github.com/luci-app-nekoclash  package/luci-app-nekoclash
 ```bash
 make package/luci-app-nekoclash/{clean,compile} V=s
 ```
-
-  <img src="https://raw.githubusercontent.com/Thaolga/neko/main/img/im.png" >
+ <img src="https://raw.githubusercontent.com/Thaolga/neko/main/img/ge.png" >
+ <img src="https://raw.githubusercontent.com/Thaolga/neko/main/img/im.png" >
