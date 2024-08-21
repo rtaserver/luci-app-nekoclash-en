@@ -544,6 +544,11 @@ function createStartScript() {
     }
 }
 
+function readRecentLogLines($filePath, $lines = 1000) {
+    $command = "tail -n $lines " . escapeshellarg($filePath);
+    return shell_exec($command);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['singbox'])) {
         if ($_POST['singbox'] === 'start') {
@@ -593,7 +598,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 function readLogFile($filePath) {
     if (file_exists($filePath)) {
-        return nl2br(htmlspecialchars(file_get_contents($filePath)));
+        return nl2br(htmlspecialchars(readRecentLogLines($filePath)));
     } else {
         return '日志文件不存在';
     }
