@@ -130,11 +130,11 @@ include './cfg.php';
             <a class="col btn btn-lg" data-bs-toggle="tab" href="#upload">订阅</a>
         </li>
     </ul>
-</div>
-
-            <div class="tab-content">
-                <div id="info" class="tab-pane fade show active">
-                    <h2 class="text-center p-2">配置资讯</h2>
+      </div>
+        <div class="container container-bg border border-3 rounded-4 col-12 mb-4"></br>
+          <div class="tab-content">
+            <div id="info" class="tab-pane fade show active">
+                <h2 class="text-center p-2">配置资讯</h2>
                     <table class="table table-borderless callout mb-5">
                         <tbody>
                             <tr class="text-center">
