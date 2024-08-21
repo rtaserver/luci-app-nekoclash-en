@@ -331,8 +331,8 @@ install_php() {
     ARCH=$(uname -m)
 
     if [ "$ARCH" == "aarch64" ]; then
-        PHP_CGI_URL="https://github.com/Thaolga/neko/releases/download/core_neko/php8-cgi_8.2.2-1_aarch64_generic.ipk"
-        PHP_URL="https://github.com/Thaolga/neko/releases/download/core_neko/php8_8.2.2-1_aarch64_generic.ipk"
+        PHP_CGI_URL="https://github.com/Thaolga/neko/releases/download/core_neko/php8-cgi_8.2.22-1_aarch64_generic.ipk"
+        PHP_URL="https://github.com/Thaolga/neko/releases/download/core_neko/php8_8.2.22-1_aarch64_generic.ipk"
     elif [ "$ARCH" == "x86_64" ]; then
         PHP_CGI_URL="https://github.com/Thaolga/neko/releases/download/core_neko/php8-cgi_8.2.2-1_x86_64.ipk"
         PHP_URL="https://github.com/Thaolga/neko/releases/download/core_neko/php8_8.2.2-1_x86_64.ipk"
