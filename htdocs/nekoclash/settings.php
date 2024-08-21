@@ -452,7 +452,7 @@ $singBoxVersion = getSingboxVersion();
                     <tr class="text-center">
                         <td>
                             <div class="link-box">
-                                <a href="https://t.me/joinchat/InJrhXPcuJJiMDdl" target="_blank">Telegram</a>
+                                <a href="https://t.me/+J55MUupktxFmMDgx" target="_blank">Telegram</a>
                             </div>
                         </td>
                         <td>
