@@ -82,27 +82,69 @@ $dashboard_link = $neko_cfg['ctrl_host'] . ':' . $neko_cfg['ctrl_port'] . '/ui/d
             <a href="./settings.php" class="col btn btn-lg">设定</a>
         </div>
     </div>
-    <div class="container text-left p-3">
-      
-        <div class="container-fluid container-bg border border-3 rounded-4 mb-3">
-            <h2 class="text-center p-2">Meta面板</h2>
-            <table class="table table-borderless callout mb-2">
-                <tbody>
-                    <tr class="text-center callout">
-                        <td><a class="btn btn-outline-info" target="_blank" href="http://<?=$yacd_link ?>">YACD</a></td>
-                        <td><a class="btn btn-outline-info" target="_blank" href="http://<?=$dashboard_link ?>">DASHBOARD</a></td>
-                        <td><a class="btn btn-outline-info" target="_blank" href="http://<?=$meta_link ?>">METACUBEXD</a></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="container h-100 mb-5">
-                <iframe class="border border-3 rounded-4 w-100" height="700" src="http://<?=$yacd_link ?>" title="yacd" allowfullscreen></iframe>
-            </div>
+   <div class="container text-left p-3">
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .container-bg {
+            padding: 20px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .btn-outline-info {
+            height: 50px;
+            line-height: 40px;
+            display: inline-block; 
+            margin: 0; 
+            text-align: center; 
+            color: #fff; 
+            background-color: #007bff; 
+            border-color: #007bff; 
+            transition: background-color 0.3s, border-color 0.3s; 
+        }
+        .btn-outline-info:hover {
+            background-color: #c66f2d; 
+            border-color: #0056b3; 
+        }
+        .btn-container {
+            display: flex;
+            justify-content: space-between; 
+            width: 100%; 
+            position: relative; 
+            top: -15px; 
+            margin-top: 20px; 
+        }
+        .btn-container a {
+            flex: 1; 
+            margin: 0 5px; 
+        }
+        iframe {
+            border: 3px solid #ddd; 
+        }
+        footer {
+            margin-top: 20px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid container-bg border border-3 rounded-4 mb-3">
+        <h2 class="text-center p-2">Meta面板</h2>
+        <div class="container h-100 mb-5">
+            <iframe class="border border-3 rounded-4 w-100" height="700" src="http://<?=$yacd_link ?>" title="yacd" allowfullscreen></iframe>
+        </div>
+        <div class="btn-container">
+            <a class="btn btn-outline-info" target="_blank" href="http://<?=$yacd_link ?>">打开YACD-META面板</a>
+            <a class="btn btn-outline-info" target="_blank" href="http://<?=$dashboard_link ?>">打开DASHBOARD面板</a>
+            <a class="btn btn-outline-info" target="_blank" href="http://<?=$meta_link ?>">打开METACUBEXD面板</a>
         </div>
     </div>
- 
     <footer class="text-center">
         <p><?php echo $footer ?></p>
     </footer>
-  </body>
+</body>
 </html>

@@ -146,48 +146,46 @@ $singBoxVersion = getSingboxVersion();
         <tr>
 <td class="col-2">客户端版本</td>
 <td class="col-4">
-    <div class="form-control text-center" style="display: flex; align-items: center; justify-content: space-between;">
-        <div style="font-family: monospace;">
+    <div class="form-control text-center" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+        <div style="font-family: monospace; flex-grow: 1; text-align: left;">
             <?php
             $package_name = "luci-app-neko"; 
             $installed_version = trim(shell_exec("opkg list-installed | grep $package_name | awk '{print $3}'"));
             echo htmlspecialchars($installed_version ?: '-'); 
             ?>
         </div>
-        <button id="updateButton" class="button">更新到最新版本</button>
+        <button id="updateButton" class="button" style="flex-shrink: 0;">更新到最新版本</button>
     </div>
     <div id="logOutput"></div>
 </td>
 </tr>
 <tr>
+    <td class="col-2">Sing-box核心版本</td>
+    <td class="col-4">
+        <div class="form-control text-center" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+            <div style="font-family: monospace; flex-grow: 1; text-align: left;" id="singBoxCorever">
+                <?php echo htmlspecialchars($singBoxVersion); ?>
+            </div>
+            <div style="display: flex; gap: 10px; flex-shrink: 0;">
+                <button id="updateSingboxButton" class="button">更新Singbox内核</button>
+            </div>
+        </div>
+    </td>
+</tr>
     <td class="col-2">Mihomo核心版本</td>
     <td class="col-4">
-        <div class="form-control text-center" style="display: flex; align-items: center; justify-content: space-between;">
-            <div style="font-family: monospace;" id="corever">-</div>
-            <div style="display: flex; gap: 10px;">              
+        <div class="form-control text-center" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+            <div style="font-family: monospace; flex-grow: 1; text-align: left;" id="corever">-</div>
+            <div style="display: flex; gap: 10px; flex-shrink: 0;">              
                 <button id="updateNekoButton" class="button">切换NeKo内核</button>
                 <button id="updateCoreButton" class="button">切换Mihomo内核</button>
-                     </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-
-            <td class="col-2">Sing-box核心版本</td>
-                <td class="col-4">
-                    <div class="form-control text-center" style="display: flex; align-items: center; justify-content: space-between;">
-                        <div style="font-family: monospace;" id="singBoxCorever">
-                            <?php echo htmlspecialchars($singBoxVersion); ?>
-                        </div>
-                        <div style="display: flex; gap: 10px;">
-                            <button id="updateSingboxButton" class="button">安装Sing-box内核</button>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+ </tbody>
+ </table>
 <style>
     .button {
         background-color: #4169E1; 
@@ -380,52 +378,52 @@ $singBoxVersion = getSingboxVersion();
 
         <h5 class="text-center mb-4">核心特点</h5>
         <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="feature-box text-center">
+            <div class="col-md-4 mb-4 d-flex">
+                <div class="feature-box text-center flex-fill">
                     <h6>简化配置</h6>
                     <p>采用用户友好的界面和智能配置功能，轻松实现 Mihomo 代理的设置与管理。</p>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="feature-box text-center">
+            <div class="col-md-4 mb-4 d-flex">
+                <div class="feature-box text-center flex-fill">
                     <h6>优化性能</h6>
                     <p>通过高效的脚本和自动化处理，确保最佳的代理性能和稳定性。</p>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="feature-box text-center">
+            <div class="col-md-4 mb-4 d-flex">
+                <div class="feature-box text-center flex-fill">
                     <h6>无缝体验</h6>
                     <p>专为家庭用户设计，兼顾易用性与功能性，确保每个家庭成员都能便捷地使用代理服务。</p>
                 </div>
             </div>
         </div>
 
-        <h5 class="text-center mb-4">工具信息</h5>
-        <div class="table-container">
-            <table class="table table-borderless mb-5">
-             
-                <tbody>
-                    <tr class="text-center">
-                        <td>SagerNet</td>
-                        <td>MetaCubeX</td>
-                    </tr>
-                    <tr class="text-center">
-                        <td>
-                            <div class="link-box">
-                                <a href="https://github.com/SagerNet/sing-box" target="_blank">Sing-box</a>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="link-box">
-                                <a href="https://github.com/MetaCubeX/mihomo" target="_blank">Mihomo</a>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h5 class="text-center mb-4">外部链接</h5>
+<h5 class="text-center mb-4">工具信息</h5>
+<div class="d-flex justify-content-center">
+    <div class="table-container">
+        <table class="table table-borderless mb-5">
+            <tbody>
+                <tr class="text-center">
+                    <td>SagerNet</td>
+                    <td>MetaCubeX</td>
+                </tr>
+                <tr class="text-center">
+                    <td>
+                        <div class="link-box">
+                            <a href="https://github.com/SagerNet/sing-box" target="_blank">Sing-box</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="link-box">
+                            <a href="https://github.com/MetaCubeX/mihomo" target="_blank">Mihomo</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+    <h5 class="text-center mb-4">外部链接</h5>
         <div class="table-container">
             <table class="table table-borderless mb-5">
                 <tbody>

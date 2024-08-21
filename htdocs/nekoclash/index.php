@@ -768,23 +768,47 @@ $singboxStartLogContent = readLogFile($singboxStartLogFile);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        .btn-clear-log {
-            margin-bottom: 20px; 
-        }
-        textarea.form-control {
-            padding-bottom: 15px; 
+        .container-bg {
+            padding: 20px;
         }
         .log-container {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             height: 100%;
+            min-width: 0; 
         }
-        .log-header, .log-footer {
+        .log-header {
             text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.1rem; 
         }
         .log-footer {
+            display: flex;
+            justify-content: center; 
             margin-top: auto;
+        }
+        textarea.form-control {
+            height: 300px; 
+            width: 100%; 
+            resize: none; 
+            padding: 10px;
+            box-sizing: border-box;
+            white-space: pre-wrap; 
+            overflow-x: auto; 
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .col {
+            flex: 1;
+            min-width: 0; 
+        }
+        .btn-clear-log {
+            margin-bottom: 20px;
+            flex-shrink: 0; 
         }
     </style>
 </head>
@@ -794,21 +818,21 @@ $singboxStartLogContent = readLogFile($singboxStartLogFile);
         <div class="row mt-3">
             <div class="col log-container">
                 <h4 class="log-header">插件日志</h4>
-                <textarea class="form-control" rows="10" readonly><?php echo $logContent; ?></textarea>
+                <textarea class="form-control" readonly><?php echo htmlspecialchars($logContent, ENT_QUOTES, 'UTF-8'); ?></textarea>
                 <form action="index.php" method="post" class="mt-3 log-footer">
                     <button type="submit" name="clear_plugin_log" class="btn btn-danger btn-clear-log">清空插件日志</button>
                 </form>
             </div>
             <div class="col log-container">
                 <h4 class="log-header">Mihomo 日志</h4>
-                <textarea class="form-control" rows="10" readonly><?php echo $kernelLogContent; ?></textarea>
+                <textarea class="form-control" readonly><?php echo htmlspecialchars($kernelLogContent, ENT_QUOTES, 'UTF-8'); ?></textarea>
                 <form action="index.php" method="post" class="mt-3 log-footer">
                     <button type="submit" name="clear_kernel_log" class="btn btn-danger btn-clear-log">清空 Mihomo 日志</button>
                 </form>
             </div>
             <div class="col log-container">
                 <h4 class="log-header">Sing-box 日志</h4>
-                <textarea class="form-control" rows="10" readonly><?php echo $singboxLogContent; ?></textarea>
+                <textarea class="form-control" readonly><?php echo htmlspecialchars($singboxLogContent, ENT_QUOTES, 'UTF-8'); ?></textarea>
                 <form action="index.php" method="post" class="mt-3 log-footer">
                     <button type="submit" name="clear_singbox_log" class="btn btn-danger btn-clear-log">清空 Sing-box 日志</button>
                 </form>
