@@ -1,10 +1,10 @@
 # See /LICENSE for more information.
 # This is free software, licensed under the GNU General Public License v3.
-# Copyright (C) 2024 nosignal
+# Copyright (C) 2024 Thaolga
 
 include $(TOPDIR)/rules.mk
 
-PKG_MAINTAINER:=nosignal <https://github.com/nosignals/neko>
+PKG_MAINTAINER:=Thaolga <https://github.com/Thaolga/luci-app-nekoclash>
 PKG_NAME:=luci-app-nekoclash
 PKG_VERSION:=1.1.33-beta
 
