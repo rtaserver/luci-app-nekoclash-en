@@ -347,7 +347,7 @@ if (isset($_POST['update'])) {
         if ($fileContent === false) {
             $message = "无法下载文件。cURL 错误信息: " . $error;
         } else {
-            $fileContent = str_replace("\xEF\xBB\xBF", '', $fileContent);
+            $fileContent = str_replace("\xEF\xBB\xBF", '', $fileContent); 
 
             $parsedData = json_decode($fileContent, true);
             if ($parsedData === null && json_last_error() !== JSON_ERROR_NONE) {
@@ -397,7 +397,7 @@ if (isset($_POST['update'])) {
                     ];
                 }
 
-                $fileContent = json_encode($parsedData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+                $fileContent = json_encode($parsedData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
                 if (file_put_contents($finalPath, $fileContent) === false) {
                     $message = "无法保存文件到: $finalPath";
@@ -410,7 +410,7 @@ if (isset($_POST['update'])) {
         $message = "订阅链接为空！";
     }
 
-    file_put_contents($dataFile, json_encode($subscriptionData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+    file_put_contents($dataFile, json_encode($subscriptionData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 }
 ?>
 
@@ -531,7 +531,8 @@ if (isset($_POST['update'])) {
             <label for="custom_file_name">自定义文件名 (默认为 config.json):</label>
             <input type="text" name="custom_file_name" id="custom_file_name" value="<?php echo htmlspecialchars($subscriptionData['subscription']['file_name']); ?>">
         </div>
-        <button type="submit" name="update">更新配置</button>
+        <button type="submit" name="update">更新订阅链接</button>
     </form>
+    </div>
 </body>
 </html>
