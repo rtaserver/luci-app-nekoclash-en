@@ -16,10 +16,11 @@ function writeVersionToFile($version) {
     }
 }
 
-$latest_version = 'V1.9.4'; 
+$latest_version = '1.10.0-beta.4'; 
 $current_version = ''; 
 $install_path = '/usr/bin/sing-box'; 
-$temp_file = '/tmp/sing-box.gz'; 
+$temp_file = '/tmp/sing-box.tar.gz'; 
+$temp_dir = '/tmp/singbox_temp'; 
 
 if (file_exists($install_path)) {
     $current_version = trim(shell_exec("{$install_path} --version"));
@@ -33,10 +34,10 @@ $current_arch = trim(shell_exec("uname -m"));
 $download_url = '';
 switch ($current_arch) {
     case 'aarch64':
-        $download_url = 'https://github.com/Thaolga/neko/releases/download/core_neko/sing-box-1.9.4-linux-arm64';
+        $download_url = 'https://github.com/SagerNet/sing-box/releases/download/v1.10.0-beta.4/sing-box-1.10.0-beta.4-linux-arm64.tar.gz';
         break;
     case 'x86_64':
-        $download_url = 'https://github.com/Thaolga/neko/releases/download/core_neko/sing-box';
+        $download_url = 'https://github.com/SagerNet/sing-box/releases/download/v1.10.0-beta.4/sing-box-1.10.0-beta.4-linux-amd64.tar.gz';
         break;
     default:
         logMessage("未找到适合架构的下载链接: $current_arch");
@@ -59,26 +60,52 @@ exec("wget -O '$temp_file' '$download_url'", $output, $return_var);
 logMessage("wget 返回值: $return_var");
 
 if ($return_var === 0) {
-    logMessage("替换文件命令: cp -f '$temp_file' '$install_path'");
-    exec("cp -f '$temp_file' '$install_path'", $output, $return_var);
-    logMessage("替换文件返回值: $return_var");
+    if (!is_dir($temp_dir)) {
+        logMessage("创建临时解压目录: $temp_dir");
+        mkdir($temp_dir, 0755, true);
+    } else {
+        logMessage("临时解压目录已存在: $temp_dir");
+    }
+
+    logMessage("解压命令: tar -xzf '$temp_file' -C '$temp_dir'");
+    exec("tar -xzf '$temp_file' -C '$temp_dir'", $output, $return_var);
+    logMessage("解压返回值: $return_var");
 
     if ($return_var === 0) {
-        exec("chmod 0755 '$install_path'", $output, $return_var);
-        logMessage("设置权限命令: chmod 0755 '$install_path'");
-        logMessage("设置权限返回值: $return_var");
+        logMessage("解压后的文件列表:");
+        exec("ls -lR '$temp_dir'", $output);
+        logMessage(implode("\n", $output));
 
-        if ($return_var === 0) {
-            logMessage("核心更新完成！当前版本: $latest_version");
-            writeVersionToFile($latest_version); 
-            echo "更新完成！当前版本: $latest_version";
+        $extracted_file = glob("$temp_dir/sing-box-*/*sing-box")[0] ?? '';
+        if ($extracted_file && file_exists($extracted_file)) {
+            logMessage("移动文件命令: cp -f '$extracted_file' '$install_path'");
+            exec("cp -f '$extracted_file' '$install_path'", $output, $return_var);
+            logMessage("替换文件返回值: $return_var");
+
+            if ($return_var === 0) {
+                exec("chmod 0755 '$install_path'", $output, $return_var);
+                logMessage("设置权限命令: chmod 0755 '$install_path'");
+                logMessage("设置权限返回值: $return_var");
+
+                if ($return_var === 0) {
+                    logMessage("核心更新完成！当前版本: $latest_version");
+                    writeVersionToFile($latest_version); 
+                    echo "更新完成！当前版本: $latest_version";
+                } else {
+                    logMessage("设置权限失败！");
+                    echo "设置权限失败！";
+                }
+            } else {
+                logMessage("替换文件失败，返回值: $return_var");
+                echo "替换文件失败！";
+            }
         } else {
-            logMessage("设置权限失败！");
-            echo "设置权限失败！";
+            logMessage("解压后的文件 'sing-box' 不存在。");
+            echo "解压后的文件 'sing-box' 不存在。";
         }
     } else {
-        logMessage("替换文件失败，返回值: $return_var");
-        echo "替换文件失败！";
+        logMessage("解压失败，返回值: $return_var");
+        echo "解压失败！";
     }
 } else {
     logMessage("下载失败，返回值: $return_var");
@@ -88,5 +115,9 @@ if ($return_var === 0) {
 if (file_exists($temp_file)) {
     unlink($temp_file);
     logMessage("清理临时文件: $temp_file");
+}
+if (is_dir($temp_dir)) {
+    exec("rm -r '$temp_dir'");
+    logMessage("清理临时解压目录: $temp_dir");
 }
 ?>

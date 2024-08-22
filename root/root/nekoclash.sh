@@ -246,7 +246,7 @@ install_singbox() {
 
     local install_path='/usr/bin/sing-box'
     local temp_dir='/tmp/singbox_temp'
-    local temp_file='/tmp/singbox.tar.gz'
+    local temp_file='/tmp/sing-box.tar.gz'
     local latest_version='1.10.0-beta.4'
 
     local current_arch=$(uname -m)
@@ -286,9 +286,15 @@ install_singbox() {
         ls -lR "$temp_dir"
 
         if [ $return_var -eq 0 ]; then
-            if [ -e "$temp_dir/sing-box-$latest_version-linux-amd64/sing-box" ]; then
-                log_message "移动文件命令: mv '$temp_dir/sing-box-$latest_version-linux-amd64/sing-box' '$install_path'"
-                mv "$temp_dir/sing-box-$latest_version-linux-amd64/sing-box" "$install_path"
+            if [ "$current_arch" = "x86_64" ]; then
+                extracted_file="$temp_dir/sing-box-$latest_version-linux-amd64/sing-box"
+            elif [ "$current_arch" = "aarch64" ]; then
+                extracted_file="$temp_dir/sing-box-$latest_version-linux-arm64/sing-box"
+            fi
+
+            if [ -e "$extracted_file" ]; then
+                log_message "移动文件命令: mv '$extracted_file' '$install_path'"
+                mv "$extracted_file" "$install_path"
                 chmod 0755 "$install_path"
                 return_var=$?
                 log_message "设置权限命令: chmod 0755 '$install_path'"
