@@ -315,7 +315,7 @@ if (!file_exists($subscriptionPath)) {
 }
 
 if (!file_exists($dataFile)) {
-    file_put_contents($dataFile, json_encode($subscriptionData, JSON_PRETTY_PRINT));
+    file_put_contents($dataFile, json_encode($subscriptionData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 }
 
 $subscriptionData = json_decode(file_get_contents($dataFile), true);
@@ -354,11 +354,50 @@ if (isset($_POST['update'])) {
                 file_put_contents($finalPath, $originalContent);
                 $message = "解析 JSON 数据失败！错误信息: " . json_last_error_msg();
             } else {
-                $fileContent = str_replace(
-                    '"clash_api":{"default_mode":"\u7ed5\u8fc7\u5927\u9646\u5730\u5740","external_controller":"127.0.0.1:9090","secret":""}}',
-                    '"clash_api":{"external_ui":"/etc/neko/ui/","external_controller":"0.0.0.0:9090","secret":"Akun"}}',
-                    $fileContent
-                );
+                if (isset($parsedData['inbounds'])) {
+                    $newInbounds = [];
+
+                    foreach ($parsedData['inbounds'] as $inbound) {
+                        if (isset($inbound['type']) && $inbound['type'] === 'mixed' && $inbound['tag'] === 'mixed-in') {
+                            $newInbounds[] = $inbound;
+                        } elseif (isset($inbound['type']) && $inbound['type'] === 'tun') {
+                            continue;
+                        }
+                    }
+
+                    $newInbounds[] = [
+                        "type" => "mixed",
+                        "tag" => "SOCKS-in",
+                        "listen" => "::",
+                        "listen_port" => 4673
+                    ];
+
+                    $newInbounds[] = [
+                        "auto_route" => true,
+                        "domain_strategy" => "prefer_ipv4",
+                        "endpoint_independent_nat" => true,
+                        "inet4_address" => "172.19.0.1/30",
+                        "inet6_address" => "2001:0470:f9da:fdfa::1/64",
+                        "mtu" => 9000,
+                        "sniff" => true,
+                        "sniff_override_destination" => true,
+                        "stack" => "system",
+                        "strict_route" => true,
+                        "type" => "tun"
+                    ];
+
+                    $parsedData['inbounds'] = $newInbounds;
+                }
+
+                if (isset($parsedData['experimental']['clash_api'])) {
+                    $parsedData['experimental']['clash_api'] = [
+                        "external_ui" => "/etc/neko/ui/",
+                        "external_controller" => "0.0.0.0:9090",
+                        "secret" => "Akun"
+                    ];
+                }
+
+                $fileContent = json_encode($parsedData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
                 if (file_put_contents($finalPath, $fileContent) === false) {
                     $message = "无法保存文件到: $finalPath";
@@ -371,7 +410,7 @@ if (isset($_POST['update'])) {
         $message = "订阅链接为空！";
     }
 
-    file_put_contents($dataFile, json_encode($subscriptionData, JSON_PRETTY_PRINT));
+    file_put_contents($dataFile, json_encode($subscriptionData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 }
 ?>
 
