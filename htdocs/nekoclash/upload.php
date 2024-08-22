@@ -44,7 +44,7 @@
     </style>
 </head>
 <body>
-    <h1>简易文件管理器</h1>
+    <h1>Mihomo文件管理器</h1>
 </body>
 </html>
 
@@ -522,7 +522,7 @@ if (isset($_POST['set_auto_update'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>简易文件管理器</title>
+    <title>Mihomo文件管理器</title>
     <style>
         .input-group {
             margin-bottom: 10px;

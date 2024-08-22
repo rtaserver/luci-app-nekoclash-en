@@ -44,7 +44,7 @@
     </style>
 </head>
 <body>
-    <h1>简易文件管理器</h1>
+    <h1>Sing-box文件管理器</h1>
 </body>
 </html>
 
@@ -320,7 +320,7 @@ if (!file_exists($dataFile)) {
 
 $subscriptionData = json_decode(file_get_contents($dataFile), true);
 if (!$subscriptionData) {
-    $subscriptionData = $subscriptionData; 
+    $subscriptionData = $subscriptionData;
 }
 
 if (isset($_POST['update'])) {
@@ -332,13 +332,40 @@ if (isset($_POST['update'])) {
 
     if (!empty($subscriptionUrl)) {
         $finalPath = $subscriptionPath . $customFileName;
-        $command = "curl -fsSL -o {$finalPath} {$subscriptionUrl}";
-        exec($command . ' 2>&1', $output, $return_var);
 
-        if ($return_var === 0) {
-            $message = "订阅链接 {$subscriptionUrl} 更新成功！文件已保存到: {$finalPath}";
+        $originalContent = file_exists($finalPath) ? file_get_contents($finalPath) : '';
+
+        $ch = curl_init($subscriptionUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        $fileContent = curl_exec($ch);
+        $error = curl_error($ch);
+        curl_close($ch);
+
+        if ($fileContent === false) {
+            $message = "无法下载文件。cURL 错误信息: " . $error;
         } else {
-            $message = "配置更新失败！错误信息: " . implode("\n", $output);
+            $fileContent = str_replace("\xEF\xBB\xBF", '', $fileContent);
+
+            $parsedData = json_decode($fileContent, true);
+            if ($parsedData === null && json_last_error() !== JSON_ERROR_NONE) {
+                file_put_contents($finalPath, $originalContent);
+                $message = "解析 JSON 数据失败！错误信息: " . json_last_error_msg();
+            } else {
+                $fileContent = str_replace(
+                    '"clash_api":{"default_mode":"\u7ed5\u8fc7\u5927\u9646\u5730\u5740","external_controller":"127.0.0.1:9090","secret":""}}',
+                    '"clash_api":{"external_ui":"/etc/neko/ui/","external_controller":"0.0.0.0:9090","secret":"Akun"}}',
+                    $fileContent
+                );
+
+                if (file_put_contents($finalPath, $fileContent) === false) {
+                    $message = "无法保存文件到: $finalPath";
+                } else {
+                    $message = "订阅链接 {$subscriptionUrl} 更新成功！文件已保存到: {$finalPath}，并成功解析和替换 JSON 数据。";
+                }
+            }
         }
     } else {
         $message = "订阅链接为空！";
@@ -347,12 +374,13 @@ if (isset($_POST['update'])) {
     file_put_contents($dataFile, json_encode($subscriptionData, JSON_PRETTY_PRINT));
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>简易文件管理器</title>
+    <title>Sing-box文件管理器</title>
     <style>
         .input-group {
             margin-bottom: 10px;
@@ -368,86 +396,86 @@ if (isset($_POST['update'])) {
         }
         body {
             background-color: #333;
-            font-family: Arial, sans-serif; 
+            font-family: Arial, sans-serif;
         }
         h1, .help-text {
-            color: rgb;
+            color: #00FF7F;
         }
         textarea.copyable {
-            width: 50%; 
-            height: 150px; 
-            resize: none; 
-            padding: 10px; 
-            border: 1px solid #ccc; 
-            border-radius: 5px;    
-            background-color: #444; 
-            color: white; 
-            font-size: 14px; 
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
-            display: none; 
+            width: 50%;
+            height: 150px;
+            resize: none;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #444;
+            color: white;
+            font-size: 14px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            display: none;
         }
         textarea.copyable:focus {
-            outline: none; 
-            border-color: #ff79c6; 
-            box-shadow: 0 0 5px rgba(255, 121, 198, 0.5); 
+            outline: none;
+            border-color: #ff79c6;
+            box-shadow: 0 0 5px rgba(255, 121, 198, 0.5);
         }
         #copyButton {
-            background-color: #00BFFF; 
-            color: white; 
-            padding: 5px 10px; 
-            border: none; 
-            border-radius: 5px; 
+            background-color: #00BFFF;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
         }
         #copyButton:hover {
             background-color: #008CBA;
         }
         button[name="update"] {
-            background-color: #FF6347; 
-            color: white; 
-            padding: 5px 10px; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
+            background-color: #FF6347;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
         button[name="update"]:hover {
-            background-color: darkgreen; 
+            background-color: darkgreen;
         }
         #convertButton,
         button[name="convert_base64"] {
             background-color: #00BFFF;
-            color: white; 
-            padding: 5px 10px; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            font-size: 14px; 
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
         }
         #convertButton:hover,
         button[name="convert_base64"]:hover {
-            background-color: #008CBA; 
+            background-color: #008CBA;
         }
         button[name="set_auto_update"] {
-            background-color: #32CD32; 
-            color: white; 
-            padding: 5px 10px; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            margin-top: 10px; 
+            background-color: #32CD32;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
         }
         button[name="set_auto_update"]:hover {
-            background-color: #228B22; 
+            background-color: #228B22;
         }
         .form-spacing {
-            margin-bottom: 30px; 
+            margin-bottom: 30px;
         }
     </style>
 </head>
 <body>
     <h1 style="color: #00FF7F;">Sing-box订阅程序</h1>
     <p class="help-text">
-     请填写Sing-box订阅链接订阅，也可以手动上传配置文件，不要修改默认名称，注意端口和接口。<br>
+        请填写Sing-box订阅链接订阅，也可以手动上传配置文件，不要修改默认名称，注意端口和接口。<br>
     </p>
 
     <?php if ($message): ?>
