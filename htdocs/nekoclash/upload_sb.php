@@ -1,53 +1,3 @@
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            display: flex; 
-            flex-direction: column;
-            margin: 0;
-            min-height: 100vh; 
-            background-color: #f0f0f0;
-            align-items: center; 
-            justify-content: flex-start; 
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            width: 100%; 
-            padding: 20px;
-            box-sizing: border-box; 
-            align-items: center; 
-            text-align: center; 
-        }
-        h1 {
-            color: #00FF7F;
-        }
-        h2 {
-            color: #333;
-        }
-        .button-group {
-            display: inline-block;
-        }
-        .delete-button,
-        .rename-button,
-        .edit-button {
-            margin-left: 5px;
-            cursor: pointer;
-        }
-        #current-time {
-            margin-bottom: 20px; 
-        }
-    </style>
-</head>
-<body>
-    <h1>Sing-box文件管理器</h1>
-</body>
-</html>
-
 <?php
 $configDir = '/etc/neko/config/';
 
@@ -168,145 +118,23 @@ function formatSize($size) {
 }
 ?>
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            background-image: url('/nekoclash/assets/img/1.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            color: white;
-        }
-        .editor {
-            width: 100%;
-            height: 400px; 
-            background-color: #222; 
-            color: white;
-            padding: 10px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            font-family: monospace; 
-        }
-        .delete-button, .rename-button, .edit-button {
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .delete-button {
-            background-color: red;
-            color: white;
-            border: none;
-        }
-        .delete-button:hover {
-            background-color: darkred;
-        }
-        .rename-button {
-            background-color: lightgreen;
-            color: black;
-            border: none;
-        }
-        .rename-button:hover {
-            background-color: darkgreen;
-        }
-        .edit-button {
-            background-color: orange;
-            color: white;
-            border: none;
-        }
-        .edit-button:hover {
-            background-color: darkred;
-        }
-        .button-group {
-            display: inline-flex;
-            gap: 5px;
-        }
-    </style>
-</head>
-<body>
-    <h1 style="color: #00FFFF;">文件上传和下载管理</h1>
-
-    <h2 style="color: #00FF7F;">配置文件管理</h2>
-    <form action="" method="post" enctype="multipart/form-data">
-        <input type="file" name="configFileInput" required>
-        <input type="submit" value="上传配置文件">
-    </form>
-    <ul>
-        <?php foreach ($configFiles as $file): ?>
-            <?php $filePath = $configDir . $file; ?>
-            <li>
-                <a href="download.php?file=<?php echo urlencode($file); ?>"><?php echo htmlspecialchars($file); ?></a>
-                (大小: <?php echo file_exists($filePath) ? formatSize(filesize($filePath)) : '文件不存在'; ?>)
-                <div class="button-group">
-                    <form action="" method="post" style="display:inline;">
-                        <input type="hidden" name="deleteConfigFile" value="<?php echo htmlspecialchars($file); ?>">
-                        <input type="submit" class="delete-button" value="删除" onclick="return confirm('确定要删除这个文件吗？');">
-                    </form>
-
-                    <form action="" method="post" style="display:inline;">
-                        <input type="hidden" name="oldFileName" value="<?php echo htmlspecialchars($file); ?>">
-                        <input type="text" name="newFileName" placeholder="新文件名" required>
-                        <input type="hidden" name="fileType" value="config">
-                        <input type="submit" class="rename-button" value="重命名">
-                    </form>
-
-                    <form action="" method="post" style="display:inline;">
-                        <input type="hidden" name="editFile" value="<?php echo htmlspecialchars($file); ?>">
-                        <input type="hidden" name="fileType" value="config">
-                        <input type="submit" class="edit-button" value="编辑">
-                    </form>
-                </div>
-            </li>
-        <?php endforeach; ?>
-    </ul>
-
-    <?php if (isset($fileContent)): ?>
-        <?php $fileToEdit = $configDir . basename($_POST['editFile']); ?>
-        <h2 style="color: #00FF7F;">编辑文件: <?php echo $editingFileName; ?></h2>
-        <p>最后更新日期: <?php echo date('Y-m-d H:i:s', filemtime($fileToEdit)); ?></p>
-        <form action="" method="post">
-            <textarea name="saveContent" rows="15" cols="150" class="editor"><?php echo $fileContent; ?></textarea><br>
-            <input type="hidden" name="fileName" value="<?php echo htmlspecialchars($_POST['editFile']); ?>">
-            <input type="hidden" name="fileType" value="<?php echo htmlspecialchars($_POST['fileType']); ?>">
-            <input type="submit" value="保存内容">
-        </form>
-    <?php endif; ?>
-    <br>
-    <style>
-        .button {
-            text-decoration: none;
-            padding: 10px;
-            background-color: lightblue;
-            color: black;
-            border: 1px solid #007bff;
-            border-radius: 5px;
-            transition: background-color 0.3s; 
-        }
-        .button:hover {
-            background-color: deepskyblue; 
-        }
-    </style>
-
-    <div style="display: flex; gap: 10px;">
-        <a href="javascript:history.back()" class="button">返回上一级菜单</a>
-        <a href="/nekoclash/upload_sb.php" class="button">返回当前菜单</a>
-        <a href="/nekoclash/configs.php" class="button">返回配置菜单</a>
-        <a href="/nekoclash" class="button">返回主菜单</a>
-    </div>
-</body>
-</html>
 <?php
 $subscriptionPath = '/etc/neko/config/';
 $dataFile = $subscriptionPath . 'subscription_data.json';
-$configFile = $subscriptionPath . 'config.json';
 
 $message = "";
-$subscriptionData = [
-    'subscription' => [
+$defaultSubscriptions = [
+    [
         'url' => '',
         'file_name' => 'config.json',
+    ],
+    [
+        'url' => '',
+        'file_name' => '',
+    ],
+    [
+        'url' => '',
+        'file_name' => '',
     ]
 ];
 
@@ -315,22 +143,27 @@ if (!file_exists($subscriptionPath)) {
 }
 
 if (!file_exists($dataFile)) {
-    file_put_contents($dataFile, json_encode($subscriptionData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+    file_put_contents($dataFile, json_encode(['subscriptions' => $defaultSubscriptions], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 }
 
 $subscriptionData = json_decode(file_get_contents($dataFile), true);
-if (!$subscriptionData) {
-    $subscriptionData = $subscriptionData;
+
+if (!isset($subscriptionData['subscriptions']) || !is_array($subscriptionData['subscriptions'])) {
+    $subscriptionData['subscriptions'] = $defaultSubscriptions;
 }
 
-if (isset($_POST['update'])) {
-    $subscriptionUrl = $_POST['subscription_url'] ?? '';
-    $customFileName = $_POST['custom_file_name'] ?? $subscriptionData['subscription']['file_name'];
+if (isset($_POST['update_index'])) {
+    $index = intval($_POST['update_index']);
+    $subscriptionUrl = $_POST["subscription_url_$index"] ?? '';
+    $customFileName = ($_POST["custom_file_name_$index"] ?? '') ?: 'config.json';
 
-    $subscriptionData['subscription']['url'] = $subscriptionUrl;
-    $subscriptionData['subscription']['file_name'] = $customFileName;
-
-    if (!empty($subscriptionUrl)) {
+    if ($index < 0 || $index >= count($subscriptionData['subscriptions'])) {
+        $message = "无效的订阅索引！";
+    } elseif (empty($subscriptionUrl)) {
+        $message = "订阅 $index 的链接为空！";
+    } else {
+        $subscriptionData['subscriptions'][$index]['url'] = $subscriptionUrl;
+        $subscriptionData['subscriptions'][$index]['file_name'] = $customFileName;
         $finalPath = $subscriptionPath . $customFileName;
 
         $originalContent = file_exists($finalPath) ? file_get_contents($finalPath) : '';
@@ -345,14 +178,14 @@ if (isset($_POST['update'])) {
         curl_close($ch);
 
         if ($fileContent === false) {
-            $message = "无法下载文件。cURL 错误信息: " . $error;
+            $message = "订阅 $index 无法下载文件。cURL 错误信息: " . $error;
         } else {
-            $fileContent = str_replace("\xEF\xBB\xBF", '', $fileContent); 
+            $fileContent = str_replace("\xEF\xBB\xBF", '', $fileContent);
 
             $parsedData = json_decode($fileContent, true);
             if ($parsedData === null && json_last_error() !== JSON_ERROR_NONE) {
                 file_put_contents($finalPath, $originalContent);
-                $message = "解析 JSON 数据失败！错误信息: " . json_last_error_msg();
+                $message = "订阅 $index 解析 JSON 数据失败！错误信息: " . json_last_error_msg();
             } else {
                 if (isset($parsedData['inbounds'])) {
                     $newInbounds = [];
@@ -400,74 +233,174 @@ if (isset($_POST['update'])) {
                 $fileContent = json_encode($parsedData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
                 if (file_put_contents($finalPath, $fileContent) === false) {
-                    $message = "无法保存文件到: $finalPath";
+                    $message = "订阅 $index 无法保存文件到: $finalPath";
                 } else {
-                    $message = "订阅链接 {$subscriptionUrl} 更新成功！文件已保存到: {$finalPath}，并成功解析和替换 JSON 数据。";
+                    $message = "订阅 $index 更新成功！文件已保存到: {$finalPath}，并成功解析和替换 JSON 数据。";
                 }
             }
         }
-    } else {
-        $message = "订阅链接为空！";
-    }
 
-    file_put_contents($dataFile, json_encode($subscriptionData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        file_put_contents($dataFile, json_encode($subscriptionData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
 }
 ?>
 
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sing-box文件管理器</title>
-    <style>
+  <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: flex-start;
+            color: #E0E0E0; 
+            background-color: red;
+            font-family: Arial, sans-serif;
+            background: url('/nekoclash/assets/img/1.jpg') no-repeat center center fixed; 
+            background-size: cover; 
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 90%;
+            max-width: 900px; 
+            padding: 20px;
+            box-sizing: border-box;
+            align-items: center;
+            text-align: center;
+            background: rgba(30, 30, 30, 0.8); 
+            border-radius: 10px;
+            margin-top: 50px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
+        }
+        h1, h2, .help-text {
+            color: #00FF7F; 
+        }
+        .form-inline {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .form-inline .form-control-file {
+            flex: 1;
+        }
+        .file-upload-button {
+            padding: 10px 20px;
+            background-color: #03DAC6; 
+            color: #121212;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .file-upload-button:hover {
+            background-color: #018786; 
+        }
+        .list-group {
+            width: 100%;
+            margin-top: 20px;
+            padding: 0;
+            list-style: none;
+        }
+        .list-group-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #2C2C2C; 
+            border-bottom: 1px solid #444;
+        }
+        .list-group-item a {
+            color: #BB86FC; 
+            text-decoration: none;
+        }
+        .button-group form {
+            display: inline;
+        }
+        .button-group .btn {
+            margin-left: 5px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-danger {
+            background-color: #CF6679; 
+            color: #121212;
+        }
+        .btn-danger:hover {
+            background-color: #B00020; 
+        }
+        .btn-success {
+            background-color: #03DAC6; 
+            color: #121212;
+        }
+        .btn-success:hover {
+            background-color: #018786; 
+        }
+        .btn-warning {
+            background-color: #F4B400; 
+            color: #121212;
+        }
+        .btn-warning:hover {
+            background-color: #C79400; 
+        }
+        .editor {
+            height: 300px; 
+            width: 90%; 
+            min-width: 800px; 
+            max-width: 800px; 
+            background-color: #2C2C2C; 
+            color: #E0E0E0; 
+            padding: 15px; 
+            border: 1px solid #444;
+            border-radius: 5px;
+            font-family: monospace;
+            margin-top: 20px;
+            overflow: auto; 
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .nav-buttons .btn {
+            padding: 10px 20px;
+            background-color: #03DAC6; 
+            color: #121212;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+        .nav-buttons .btn:hover {
+            background-color: #018786; 
+        }
         .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
             margin-bottom: 10px;
         }
         .input-group label {
             margin-right: 10px;
             white-space: nowrap;
-        }
-        .help-text {
-            font-size: 14px;
-            color: white;
-            margin-bottom: 20px;
-        }
-        body {
-            background-color: #333;
-            font-family: Arial, sans-serif;
-        }
-        h1, .help-text {
             color: #00FF7F;
         }
-        textarea.copyable {
-            width: 50%;
-            height: 150px;
-            resize: none;
-            padding: 10px;
-            border: 1px solid #ccc;
+        .input-group input {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #444;
             border-radius: 5px;
-            background-color: #444;
-            color: white;
-            font-size: 14px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-            display: none;
-        }
-        textarea.copyable:focus {
-            outline: none;
-            border-color: #ff79c6;
-            box-shadow: 0 0 5px rgba(255, 121, 198, 0.5);
-        }
-        #copyButton {
-            background-color: #00BFFF;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #copyButton:hover {
-            background-color: #008CBA;
+            background-color: #2C2C2C;
+            color: #E0E0E0;
         }
         button[name="update"] {
             background-color: #FF6347;
@@ -476,63 +409,115 @@ if (isset($_POST['update'])) {
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
         }
         button[name="update"]:hover {
             background-color: darkgreen;
         }
-        #convertButton,
-        button[name="convert_base64"] {
-            background-color: #00BFFF;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        #convertButton:hover,
-        button[name="convert_base64"]:hover {
-            background-color: #008CBA;
-        }
-        button[name="set_auto_update"] {
-            background-color: #32CD32;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        button[name="set_auto_update"]:hover {
-            background-color: #228B22;
-        }
         .form-spacing {
             margin-bottom: 30px;
+        }
+        button {
+        background-color: #4CAF50; 
+        color: white;
+        border: none;
+        padding: 5px 10px; 
+        text-align: center; 
+        text-decoration: none; 
+        display: inline-block; 
+        cursor: pointer; 
+        border-radius: 4px; 
+        }
+        button:hover {
+        background-color: darkgreen; 
         }
     </style>
 </head>
 <body>
-    <h1 style="color: #00FF7F;">Sing-box订阅程序</h1>
-    <p class="help-text">
-        请填写Sing-box订阅链接订阅，也可以手动上传配置文件，不要修改默认名称，注意端口和接口。<br>
-    </p>
-
-    <?php if ($message): ?>
-        <p><?php echo nl2br(htmlspecialchars($message)); ?></p>
-    <?php endif; ?>
-
-    <h2 style="color: #00FF7F;">订阅链接设置</h2>
-    <form method="post">
-        <div class="input-group">
-            <label for="subscription_url">订阅链接:</label>
-            <input type="text" name="subscription_url" id="subscription_url" value="<?php echo htmlspecialchars($subscriptionData['subscription']['url']); ?>" required>
-        </div>
-        <div class="input-group">
-            <label for="custom_file_name">自定义文件名 (默认为 config.json):</label>
-            <input type="text" name="custom_file_name" id="custom_file_name" value="<?php echo htmlspecialchars($subscriptionData['subscription']['file_name']); ?>">
-        </div>
-        <button type="submit" name="update">更新订阅链接</button>
+  <div class="container">
+    <h1>Sing-box文件管理器</h1>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <h2>配置文件管理</h2>
+    <form action="" method="post" enctype="multipart/form-data" class="form-inline">
+        <input type="file" name="configFileInput" class="form-control-file" required>
+        <button type="submit" class="file-upload-button">上传配置文件</button>
     </form>
+    <ul class="list-group">
+        <?php foreach ($configFiles as $file): ?>
+            <?php $filePath = $configDir . $file; ?>
+             <li class="list-group-item">
+                <div class="list-group-item-content">
+                    <a href="download.php?file=<?php echo urlencode($file); ?>"><?php echo htmlspecialchars($file); ?></a>
+                    <span>(大小： <?php echo file_exists($filePath) ? formatSize(filesize($filePath)) : '文件不存在'; ?>)</span>
+                </div>
+                <div class="button-group">
+                    <form action="" method="post">
+                        <input type="hidden" name="deleteConfigFile" value="<?php echo htmlspecialchars($file); ?>">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('确定要删除这个文件吗？');">删除</button>
+                    </form>
+
+                    <form action="" method="post">
+                        <input type="hidden" name="oldFileName" value="<?php echo htmlspecialchars($file); ?>">
+                        <input type="text" name="newFileName" placeholder="新文件名" class="form-control form-control-sm" required>
+                        <input type="hidden" name="fileType" value="config">
+                        <button type="submit" class="btn btn-success">重命名</button>
+                    </form>
+
+                    <form action="" method="post">
+                        <input type="hidden" name="editFile" value="<?php echo htmlspecialchars($file); ?>">
+                        <input type="hidden" name="fileType" value="config">
+                        <button type="submit" class="btn btn-warning">编辑</button>
+                    </form>
+                </div>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+    <?php if (isset($fileContent)): ?>
+        <?php if (isset($_POST['editFile'])): ?>
+            <?php $fileToEdit = $configDir . basename($_POST['editFile']); ?>
+            <h2 class="mt-5">编辑文件: <?php echo $editingFileName; ?></h2>
+            <p>最后更新日期: <?php echo date('Y-m-d H:i:s', filemtime($fileToEdit)); ?></p>
+            <form action="" method="post">
+               <textarea name="saveContent" id="editor" rows="15" class="editor"><?php echo $fileContent; ?></textarea><br>
+               <input type="hidden" name="fileName" value="<?php echo htmlspecialchars($_POST['editFile']); ?>">
+               <input type="hidden" name="fileType" value="<?php echo htmlspecialchars($_POST['fileType']); ?>">
+               <button type="submit" class="btn btn-primary mt-2" onclick="checkJsonSyntax()">保存内容</button>
+            </form>
+        <?php endif; ?>
+    <?php endif; ?>
+<h1>Sing-box订阅程序</h1>
+<p class="help-text">
+    您可以输入 Sing-box 订阅链接或手动上传配置文件，配置切换时，您可自行命名，方便管理。<br>
+</p>
+
+<?php if ($message): ?>
+    <p><?php echo nl2br(htmlspecialchars($message)); ?></p>
+<?php endif; ?>
+
+<h2>订阅链接设置</h2>
+<form method="post">
+    <?php for ($i = 0; $i < 3; $i++): ?>
+        <div class="input-group">
+            <label for="subscription_url_<?php echo $i; ?>">订阅链接 <?php echo $i + 1; ?>:</label>
+            <input type="text" name="subscription_url_<?php echo $i; ?>" id="subscription_url_<?php echo $i; ?>" value="<?php echo htmlspecialchars($subscriptionData['subscriptions'][$i]['url'] ?? ''); ?>">
+        </div>
+        <div class="input-group">
+            <label for="custom_file_name_<?php echo $i; ?>">自定义文件名 <?php echo ($i === 0) ? '(固定为 config.json)' : ':'; ?></label>
+            <input type="text" name="custom_file_name_<?php echo $i; ?>" id="custom_file_name_<?php echo $i; ?>" value="<?php echo htmlspecialchars($subscriptionData['subscriptions'][$i]['file_name'] ?? ($i === 0 ? 'config.json' : '')); ?>" <?php echo ($i === 0) ? 'readonly' : ''; ?>>
+        </div>
+        <button type="submit" name="update_index" value="<?php echo $i; ?>">更新订阅 <?php echo $i + 1; ?></button>
+        <hr>
+    <?php endfor; ?>
+</form>
+    <div class="nav-buttons">
+        <a href="javascript:history.back()" class="btn">返回上一级菜单</a>
+        <a href="/nekoclash/upload_sb.php" class="btn">返回当前菜单</a>
+        <a href="/nekoclash/configs.php" class="btn">返回配置菜单</a>
+        <a href="/nekoclash" class="btn">返回主菜单</a>
     </div>
+</div>
 </body>
 </html>
