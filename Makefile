@@ -15,7 +15,7 @@ define Package/$(PKG_NAME)
 	SUBMENU:=3. Applications
 	TITLE:=LuCI support for mihomo
 	PKGARCH:=all
-	DEPENDS:=+kmod-tun +bash +curl +jq +php8 +php8-cgi +php8-mod-curl +firewall4  +nftables
+	DEPENDS:=+kmod-tun +bash +curl +jq +php8 +php8-fpm +php8-cgi +php8-mod-curl +firewall4  +nftables
 endef
 
 define Package/$(PKG_NAME)/description
