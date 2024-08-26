@@ -2,6 +2,17 @@ name: Build and Release NekoClash
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'NekoClash version'
+        required: true
+        default: '1.1.38-beta'
+        type: string
+      changelog:
+        description: 'Changelog'
+        required: true
+        default: ''
+        type: string
 
 jobs:
   build_ipk:
@@ -38,17 +49,6 @@ jobs:
     needs: build_ipk
     name: Release IPK Package
     runs-on: ubuntu-latest
-    inputs:
-      version:
-        description: 'NekoClash version'
-        required: true
-        default: '1.1.38-beta'
-        type: string
-      changelog:
-        description: 'Changelog'
-        required: true
-        default: ''
-        type: string
 
     steps:
       - name: Download IPK Artifact
@@ -67,14 +67,14 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ./release/*
           overwrite: true
-          tag: ${{ inputs.version }}
+          tag: ${{ github.event.inputs.version }}
           file_glob: true
           body: |
-            # LUCI APP NEKOCLASH ${{ inputs.version }}
+            # LUCI APP NEKOCLASH ${{ github.event.inputs.version }}
             Simple Clash TUN based Proxy
             ### Information
             - Changelog : 
-              - ${{ inputs.changelog }}
+              - ${{ github.event.inputs.changelog }}
             - Supported ARCH : 
               - `arm64 / aarch64`
               - `x86_64 / amd64`
@@ -82,5 +82,7 @@ jobs:
             - `bash, kmod-tun, php, php-cgi` (install PHP Manually before installing NekoClash)
             - `iptables` (for OpenWrt 21)
             - `nftables` (for OpenWrt 23)
+
+            ### Please Install with normal Connectivity
 
             ### Please Install with normal Connectivity
