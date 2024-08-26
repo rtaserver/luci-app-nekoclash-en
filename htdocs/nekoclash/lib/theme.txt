@@ -1,1 +1,1 @@
-NavajoWhite.css
+Skyblue.css
