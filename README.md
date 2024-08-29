@@ -57,7 +57,7 @@ git clone https://github.com/Thaolga/luci-app-nekoclash  package/luci-app-nekocl
 
 ```
 
-## Compilation :
+## Compile :
 ---
 
 ```bash
